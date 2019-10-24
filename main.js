@@ -1,8 +1,7 @@
 function paintIcons() {
   var input = document.getElementById("input");
-  var preview_original = document.getElementById("preview-original");
-  var preview_scaled = document.getElementById("preview-scaled");
-  paintVectorIcon(input.value, preview_original, preview_scaled)
+  var previews = document.getElementsByClassName("preview");
+  paintVectorIcon(input.value, previews);
 };
 
 let fileHandle;

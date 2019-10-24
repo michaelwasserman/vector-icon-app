@@ -17,11 +17,11 @@
 </head>
 <body>
   <nav>
-    <h3 id="title" hidden=true>Vector Icon App</h3>
-    <button id="open">Open</button>
-    <button id="save">Save</button>
-    <svg id="preview-original"></svg>
-    <h4 id="enable-native-file-system" hidden=true style="color: red;">
+    <h3 id="title" class="nav-element" hidden=true>Vector Icon App</h3>
+    <button id="open" class="nav-element">Open</button>
+    <button id="save" class="nav-element">Save</button>
+    <img class="preview nav-element"></svg>
+    <h4 id="enable-native-file-system" class="nav-element" hidden=true style="color: red;">
       Please enable chrome://flags/#native-file-system-api
     </h4>
   </nav>
@@ -32,7 +32,7 @@ MOVE_TO, 12, 24,
 R_LINE_TO, 18.5f, -10,
 R_V_LINE_TO, 20,
 CLOSE</textarea>
-  <img id="preview-scaled"></img>
+  <img class="preview scaled"></img>
   <script src="vector_icon.js"></script>
   <script src="main.js"></script>
   </body>

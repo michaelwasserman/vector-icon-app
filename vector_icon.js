@@ -199,23 +199,21 @@ class VectorIcon {
   }
 };
 
-function paintVectorIcon(input, original, scaled) {
+function paintVectorIcon(input, previews) {
   var lines = input.split('\n').filter(
     line => (line.length && !line.startsWith('//'))
   );
   var commands =
       lines.map(line => line.trim().split(',').filter(x => x.length > 0));
 
-  var icon = new VectorIcon(commands);
-  var svg = icon.paint();
-
-  svg.id = original.id;
-  original.parentNode.replaceChild(svg, original);
-
+  var svg = (new VectorIcon(commands)).paint();
   var svgSource = (new XMLSerializer).serializeToString(svg);
 
-  var scaledSvg = document.createElement('img');
-  scaledSvg.setAttribute('src', 'data:image/svg+xml;utf8,' + svgSource);
-  scaledSvg.id = scaled.id;
-  scaled.parentNode.replaceChild(scaledSvg, scaled);
+  for (preview of previews) {
+    var newPreview = document.createElement('img');
+    newPreview.setAttribute('src', 'data:image/svg+xml;utf8,' + svgSource);
+    newPreview.id = preview.id;
+    newPreview.classList = preview.classList;
+    preview.parentNode.replaceChild(newPreview, preview);
+  }
 }
