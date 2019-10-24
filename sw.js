@@ -1,9 +1,11 @@
 var cacheName = 'chromium-vector-icon-app';
 var filesToCache = [
-  './',
-  './index.html',
-  './css/style.css',
-  './js/main.js'
+  // TODO: MSW UPDATE CACHED FILE LIST. 
+  // './',
+  // './index.html',
+  // './style.css',
+  // './main.js'
+  // './vector_icon.js'
 ];
 
 /* Start the service worker and cache all of the app's content */
