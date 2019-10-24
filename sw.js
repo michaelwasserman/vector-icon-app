@@ -1,4 +1,4 @@
-var cacheName = 'chromium-vector-icon-app';
+var cacheName = 'vector-icon-app';
 var filesToCache = [
   // TODO: MSW UPDATE CACHED FILE LIST. 
   // './',

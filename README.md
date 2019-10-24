@@ -9,4 +9,3 @@ Thanks to James's [Hello World PWA](https://github.com/jamesjohnson280/hello-pwa
 
 ## Demo
 https://michaelwasserman.github.io/vector-icon-app/
-
