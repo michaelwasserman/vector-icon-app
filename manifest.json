@@ -7,7 +7,7 @@
       "type": "image/png"
     }],
   "file_handler": {
-    "action": "/",
+    "action": "./",
     "files": [
       {
         "name": "Vector Icon",
@@ -16,7 +16,7 @@
     ]
   },
   "lang": "en-US",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#808080",
   "theme_color": "#808080"

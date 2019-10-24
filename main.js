@@ -87,9 +87,9 @@ window.onload = () => {
       readFile();
     }
   } else if ('chooseFileSystemEntries' in window) {
-    console.error("Please enable chrome://flags/#file-handling-api");
+    console.log("Please enable chrome://flags/#file-handling-api");
   } else {
-    console.error("Please enable chrome://flags/#native-file-system-api");
+    console.log("Please enable chrome://flags/#native-file-system-api");
   }
 
   // Handle open/save button clicks and input events.
