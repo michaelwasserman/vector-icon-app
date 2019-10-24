@@ -1,11 +1,10 @@
 var cacheName = 'vector-icon-app';
 var filesToCache = [
-  // TODO: MSW UPDATE CACHED FILE LIST. 
-  // './',
-  // './index.html',
-  // './style.css',
-  // './main.js'
-  // './vector_icon.js'
+  'index.html',
+  'style.css',
+  'main.js',
+  'vector_icon.js',
+  'vector-icon-512.png',
 ];
 
 /* Start the service worker and cache all of the app's content */

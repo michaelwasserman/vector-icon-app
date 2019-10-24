@@ -227,8 +227,6 @@ function paintVectorIcon(input, original, scaled) {
   var scaledSvg = document.createElement('img');
   scaledSvg.setAttribute('src', 'data:image/svg+xml;utf8,' + svgSource);
   scaledSvg.id = scaled.id;
-  scaledSvg.width = scaled.width;
-  scaledSvg.height = scaled.height;
   scaled.parentNode.replaceChild(scaledSvg, scaled);
 }
 

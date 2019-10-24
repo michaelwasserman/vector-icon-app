@@ -7,16 +7,16 @@
       "type": "image/png"
     }],
   "file_handler": {
+    "action": "/",
     "files": [
       {
-        "name": "icon",
-        "accept": ".icon"
+        "name": "Vector Icon",
+        "accept": [".icon"]
       }
-    ],
-    "action": "index.html"
+    ]
   },
   "lang": "en-US",
-  "start_url": "index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#808080",
   "theme_color": "#808080"

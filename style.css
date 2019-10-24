@@ -20,12 +20,16 @@ button {
 svg {
   border: 1px solid rgba(0, 0, 0, 0.1); 
   margin: 5px;
+  width: 48px;
+  height: 48px;
 }
 
 img {
   border: 1px solid rgba(0, 0, 0, 0.1); 
   margin: 5px;
 
+  height: 60%;
+  max-height: 512px;
   position: absolute;
   bottom: 20px;
   right: 20px;
@@ -34,4 +38,5 @@ img {
 textarea {
   margin: 5px;
   height: 100%;
+  resize: none;
 }

@@ -20,7 +20,10 @@
     <h3 id="title" hidden=true>Vector Icon App</h3>
     <button id="open">Open</button>
     <button id="save">Save</button>
-    <svg id="preview-original" width=48 height=48></svg>
+    <svg id="preview-original"></svg>
+    <h4 id="enable-native-file-system" hidden=true style="color: red;">
+      Please enable chrome://flags/#native-file-system-api
+    </h4>
   </nav>
   <textarea id="input" spellcheck="false">
 CIRCLE, 24, 24, 24,
@@ -29,7 +32,7 @@ MOVE_TO, 12, 24,
 R_LINE_TO, 18.5f, -10,
 R_V_LINE_TO, 20,
 CLOSE</textarea>
-  <img id="preview-scaled" width=512 height=512></img>
+  <img id="preview-scaled"></img>
   <script src="vector_icon.js"></script>
   <script src="main.js"></script>
   </body>

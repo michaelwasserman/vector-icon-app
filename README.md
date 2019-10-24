@@ -2,10 +2,10 @@
 A basic app for Chromium's [vector icons](https://chromium.googlesource.com/chromium/src/+/master/components/vector_icons/README.md).
 
 Demonstrates use of the [Native File System API](https://wicg.github.io/native-file-system).
-Please enable about:flags #native-file-system-api to Save and Load files.
+Please enable chrome://flags/#native-file-system-api to Save and Load files.
 
-Attempts to demonstrate use of the [File Handling API](https://wicg.github.io/file-handling).
-Please enable about:flags #file-handling-api to handle .icon files.
+Demonstrates use of the [File Handling API](https://wicg.github.io/file-handling).
+Please enable chrome://flags/#file-handling-api to handle .icon files on Chrome OS.
 
 Thanks to Sadrul's [Chrome vector icon extension](https://github.com/sadrulhc/vector-icons), for JS vector icon rendering code.
 
