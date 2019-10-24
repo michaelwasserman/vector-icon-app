@@ -18,6 +18,11 @@ async function readFile() {
 }
 
 async function openFile(e) {
+  if (!('chooseFileSystemEntries' in window)) {
+    console.error("Please enable about:flags #native-file-system-api");
+    return;
+  }
+
   var options = {
     type: "openFile",
     multiple: false,
@@ -32,6 +37,11 @@ async function openFile(e) {
 }
 
 async function saveFile(e) {
+  if (!('chooseFileSystemEntries' in window)) {
+    console.error("Please enable about:flags #native-file-system-api");
+    return;
+  }
+
   if (!fileHandle) {
     const options = {
       type: 'saveFile',
@@ -88,7 +98,7 @@ window.onload = () => {
       readFile();
     }
   } else {
-    console.log("Warning: expected 'launchParams' in window");
+    console.error("Please enable about:flags #native-file-system-api and #file-handling-api");
   }
 
   // Handle open/save button clicks and input events.

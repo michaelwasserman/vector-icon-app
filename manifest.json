@@ -1,5 +1,6 @@
 {
   "name": "Vector Icon App",
+  "short_name": "Vector Icon App",
   "icons": [{
       "src": "vector-icon-512.png",
       "sizes": "512x512",
@@ -8,13 +9,14 @@
   "file_handler": {
     "files": [
       {
-        "name": "vector-icon-app",
-        "accept": [".icon", "text/plain"]
+        "name": "icon",
+        "accept": ".icon"
       }
-    ]
+    ],
+    "action": "index.html"
   },
   "lang": "en-US",
-  "start_url": "/index.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#808080",
   "theme_color": "#808080"
