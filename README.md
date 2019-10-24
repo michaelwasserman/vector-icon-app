@@ -1,4 +1,4 @@
-# Chromium Vector Icon App
+# Vector Icon App
 A basic app for Chromium's [vector icons](https://chromium.googlesource.com/chromium/src/+/master/components/vector_icons/README.md).
 
 Demonstrates use of the [Native File System API](https://wicg.github.io/native-file-system).

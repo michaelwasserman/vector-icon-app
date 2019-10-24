@@ -6,16 +6,6 @@ function notimplemented(msg) {
   console.log('notimplemented(vector-icon): ' + msg);
 }
 
-class ExtensionDelegate {
-  // Extracts text content from |node|. The returned text content should be
-  // the contents of the .icon file.
-  extractTextContent(node) { return ''; }
-
-  // Returns the svg element when it's created. The delegate can choose to
-  // embed it where it wants.
-  onPanelCreated(panel) {}
-};
-
 class VectorIcon {
   constructor(commands, delegate) {
     this.commands_ = commands;
@@ -229,55 +219,3 @@ function paintVectorIcon(input, original, scaled) {
   scaledSvg.id = scaled.id;
   scaled.parentNode.replaceChild(scaledSvg, scaled);
 }
-
-function updatePreviewIfVectorIcon(source_code, delegate, container) {
-  if (!window.location.pathname.endsWith('.icon')) {
-    if (container.parentNode)
-      container.parentNode.removeChild(container);
-    return;
-  }
-  container.style.disply = 'flex';
-  delegate.onPanelCreated(container);
-  var inp = delegate.extractTextContent(source_code);
-  var original = container.querySelector('#preview-original');
-  var scaled = container.querySelector('#preview-scaled');
-  paintVectorIcon(inp, original, scaled);
-}
-
-function setUpPreviewPanel(source_code, delegate) {
-  if (!source_code)
-    return;
-
-  var container = document.createElement('div');
-  container.id = 'preview-container';
-
-  var orig = document.createElement('div');
-  orig.id = 'preview-original';
-  container.appendChild(orig);
-
-  var scaled = document.createElement('div');
-  scaled.id = 'preview-scaled';
-  container.appendChild(scaled);
-  updatePreviewIfVectorIcon(source_code, delegate, container);
-
-  var observer = new MutationObserver(function(mutations) {
-    updatePreviewIfVectorIcon(source_code, delegate, container);
-  });
-  observer.observe(source_code, { childList: true });
-}
-
-function setUpExtension(selector, delegate) {
-  setUpPreviewPanel(document.querySelector(selector), delegate);
-
-  // Make sure to set up a preview panel for any |source_code| panel that gets
-  // added.
-  var observer = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-      for (var i = 0; i < mutation.addedNodes.length; i++)
-        if (mutation.addedNodes[i].id == 'source_code')
-          setUpPreviewPanel(mutation.addedNodes[i], delegate);
-    });
-  });
-  observer.observe(document, { childList: true, subtree: true });
-}
-
