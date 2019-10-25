@@ -4,16 +4,26 @@ function paintIcons() {
   paintVectorIcon(input.value, previews);
 };
 
-let fileHandle;
+let fileHandle_;
 
-async function readFile() {
+async function setIconContent(contents) {
+  var input = document.getElementById("input");
+  input.value = contents;
+  paintIcons();
+}
+
+async function readFile(fileHandle) {
   if (!fileHandle)
     return;
   const file = await fileHandle.getFile();
   const contents = await file.text();
-  var input = document.getElementById("input");
-  input.value = contents;
-  paintIcons();
+  return contents;
+}
+
+async function setFile(fileHandle) {
+  fileHandle_ = fileHandle;
+  var fileContent = await readFile(fileHandle_);
+  setIconContent(fileContent);
 }
 
 function needsFlag() {
@@ -28,7 +38,6 @@ async function openFile(e) {
   if (needsFlag())
     return;
 
-  // TODO(msw): "multiple: true" doesn't work on Chrome OS.
   var options = {
     type: "openFile",
     multiple: true,
@@ -38,18 +47,23 @@ async function openFile(e) {
       mimeTypes: ['text/plain'],
     }],
   };
-  fileHandles = await window.chooseFileSystemEntries();
-  if (!fileHandles)
+  fileHandles = await window.chooseFileSystemEntries(options);
+  if (!fileHandles || fileHandles.length == 0)
     return;
 
-  if (typeof(fileHandles) != "array") {
-    fileHandle = fileHandles;
-    readFile();
+  if (fileHandles.length == 1) {
+    setFile(fileHandles[0]);
     return;
   }
 
   // TODO(msw): FileHandle persistence and transferability would help here.
-  console.log("TODO(msw): Support multiple files:" + fileHandles.length);
+  var urls = [];
+  for (fileHandle of fileHandles) {
+    var fileContent = await readFile(fileHandle);
+    var encodedData = window.btoa(fileContent);
+    urls.push("./?base64=" + encodedData);
+  }
+  openWindows(urls);
 }
 
 async function saveFile(e) {
@@ -95,14 +109,20 @@ window.onload = () => {
 
   // File Handling API, please enable chrome://flags/#file-handling-api
   if ('launchParams' in window) {
-    if (launchParams.files.length) {
-      fileHandle = launchParams.files[0];
-      readFile();
-    }
+    // TODO(msw): Handle multiple launchParams files?
+    if (launchParams.files.length)
+      setFile(launchParams.files[0]);
   } else if ('chooseFileSystemEntries' in window) {
     console.log("Please enable chrome://flags/#file-handling-api");
   } else {
     console.log("Please enable chrome://flags/#native-file-system-api");
+  }
+
+  var urlParams = new URLSearchParams(window.location.search);
+  if (!fileHandle_ && urlParams.has("base64")) {
+    var encodedData = urlParams.get("base64");
+    var decodedData = window.atob(encodedData);
+    setIconContent(decodedData);
   }
 
   // Handle open/save button clicks and input events.
