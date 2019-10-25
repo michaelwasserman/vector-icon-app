@@ -16,32 +16,45 @@ async function readFile() {
   paintIcons();
 }
 
-async function openFile(e) {
-  if (!('chooseFileSystemEntries' in window)) {
-    document.getElementById("enable-native-file-system").hidden = false;
-    console.error("Please enable chrome://flags/#native-file-system-api");
-    return;
-  }
+function needsFlag() {
+  if ('chooseFileSystemEntries' in window)
+    return false;
+  document.getElementById("enable-native-file-system").hidden = false;
+  console.error("Please enable chrome://flags/#native-file-system-api");
+  return true;
+}
 
+async function openFile(e) {
+  if (needsFlag())
+    return;
+
+  // TODO(msw): "multiple: true" doesn't work on Chrome OS.
   var options = {
     type: "openFile",
-    multiple: false,
+    multiple: true,
     accepts: [{
       description: 'Vector icon file',
       extensions: ['icon'],
       mimeTypes: ['text/plain'],
     }],
   };
-  fileHandle = await window.chooseFileSystemEntries();
-  readFile();
+  fileHandles = await window.chooseFileSystemEntries();
+  if (!fileHandles)
+    return;
+
+  if (typeof(fileHandles) != "array") {
+    fileHandle = fileHandles;
+    readFile();
+    return;
+  }
+
+  // TODO(msw): FileHandle persistence and transferability would help here.
+  console.log("TODO(msw): Support multiple files:" + fileHandles.length);
 }
 
 async function saveFile(e) {
-  if (!('chooseFileSystemEntries' in window)) {
-    document.getElementById("enable-native-file-system").hidden = false;
-    console.error("Please enable chrome://flags/#native-file-system-api");
+  if (needsFlag())
     return;
-  }
 
   if (!fileHandle) {
     const options = {
@@ -94,6 +107,7 @@ window.onload = () => {
 
   // Handle open/save button clicks and input events.
   document.getElementById("open").addEventListener('click', openFile);
+  document.getElementById("window").addEventListener('click', windowButton);
   document.getElementById("save").addEventListener('click', saveFile);
   document.getElementById("input").addEventListener('input', paintIcons);
 
