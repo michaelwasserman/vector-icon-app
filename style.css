@@ -38,3 +38,10 @@ textarea {
   height: 100%;
   resize: none;
 }
+
+/* Hide the title element when running in a standalone PWA window. */
+@media all and (display-mode: standalone) {
+  .title {
+    display: none;
+  }
+}

@@ -4,6 +4,14 @@ function paintIcons() {
   paintVectorIcon(input.value, previews);
 };
 
+function needsFlag() {
+  if ('chooseFileSystemEntries' in window)
+    return false;
+  document.getElementById("enable-native-file-system").hidden = false;
+  console.error("Please enable chrome://flags/#native-file-system-api");
+  return true;
+}
+
 let fileHandle_;
 
 async function setIconContent(contents) {
@@ -26,12 +34,21 @@ async function setFile(fileHandle) {
   setIconContent(fileContent);
 }
 
-function needsFlag() {
-  if ('chooseFileSystemEntries' in window)
-    return false;
-  document.getElementById("enable-native-file-system").hidden = false;
-  console.error("Please enable chrome://flags/#native-file-system-api");
-  return true;
+async function openFileHandles(fileHandles) {
+  if (fileHandles.length > 1) {
+    // TODO(msw): Reuse the existing window for the first file?
+    // setFile(fileHandles.shift());
+    // TODO(msw): FileHandle persistence and transferability would help here.
+    var urls = [];
+    for (fileHandle of fileHandles) {
+      var fileContent = await readFile(fileHandle);
+      var encodedData = window.btoa(fileContent);
+      urls.push("./?base64=" + encodedData);
+    }
+    openWindows(urls);
+  } else if (fileHandles.length == 1) {
+    setFile(fileHandles[0]);
+  }
 }
 
 async function openFile(e) {
@@ -48,22 +65,7 @@ async function openFile(e) {
     }],
   };
   fileHandles = await window.chooseFileSystemEntries(options);
-  if (!fileHandles || fileHandles.length == 0)
-    return;
-
-  if (fileHandles.length == 1) {
-    setFile(fileHandles[0]);
-    return;
-  }
-
-  // TODO(msw): FileHandle persistence and transferability would help here.
-  var urls = [];
-  for (fileHandle of fileHandles) {
-    var fileContent = await readFile(fileHandle);
-    var encodedData = window.btoa(fileContent);
-    urls.push("./?base64=" + encodedData);
-  }
-  openWindows(urls);
+  openFileHandles(fileHandles);
 }
 
 async function saveFile(e) {
@@ -97,21 +99,10 @@ window.onload = () => {
              .register('./sw.js');
   }
 
-  // Show a title element when not run in a standalone PWA window.
-  const isInStandaloneMode =
-    window.matchMedia('(display-mode: standalone)').matches ||
-    window.navigator.standalone ||
-    document.referrer.includes('android-app://');
-  document.getElementById("title").hidden = isInStandaloneMode;
-  window.addEventListener('appinstalled', function() {
-    document.getElementById("title").hidden = true;
-  });
-
   // File Handling API, please enable chrome://flags/#file-handling-api
   if ('launchParams' in window) {
-    // TODO(msw): Handle multiple launchParams files?
     if (launchParams.files.length)
-      setFile(launchParams.files[0]);
+      openFileHandles(launchParams.files);
   } else if ('chooseFileSystemEntries' in window) {
     console.log("Please enable chrome://flags/#file-handling-api");
   } else {
