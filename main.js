@@ -4,12 +4,19 @@ function paintIcons() {
   paintVectorIcon(input.value, previews);
 };
 
-function needsFlag() {
+function checkFileHandlingSupport() {
+  if ('launchQueue' in window)
+    return true;
+  console.error("Please enable chrome://flags/#file-handling-api");
+  return false;
+}
+
+function checkNativeFileSystemSupport() {
   if ('chooseFileSystemEntries' in window)
-    return false;
+    return true;
   document.getElementById("enable-native-file-system").hidden = false;
   console.error("Please enable chrome://flags/#native-file-system-api");
-  return true;
+  return false;
 }
 
 let fileHandle_;
@@ -52,7 +59,7 @@ async function openFileHandles(fileHandles) {
 }
 
 async function openFile(e) {
-  if (needsFlag())
+  if (!checkNativeFileSystemSupport())
     return;
 
   var options = {
@@ -69,7 +76,7 @@ async function openFile(e) {
 }
 
 async function saveFile(e) {
-  if (needsFlag())
+  if (!checkNativeFileSystemSupport())
     return;
 
   if (!fileHandle) {
@@ -100,14 +107,12 @@ window.onload = () => {
   }
 
   // File Handling API, please enable chrome://flags/#file-handling-api
-  if ('launchParams' in window) {
-    if (launchParams.files.length)
+  if (checkFileHandlingSupport()) {
+    window.launchQueue.setConsumer(async launchParams => {
       openFileHandles(launchParams.files);
-  } else if ('chooseFileSystemEntries' in window) {
-    console.log("Please enable chrome://flags/#file-handling-api");
-  } else {
-    console.log("Please enable chrome://flags/#native-file-system-api");
+    });
   }
+  checkNativeFileSystemSupport();
 
   var urlParams = new URLSearchParams(window.location.search);
   if (!fileHandle_ && urlParams.has("base64")) {

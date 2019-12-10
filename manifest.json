@@ -2,19 +2,19 @@
   "name": "Vector Icon App",
   "short_name": "Vector Icon App",
   "icons": [{
-      "src": "vector-icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }],
-  "file_handler": {
-    "action": "./",
-    "files": [
-      {
-        "name": "Vector Icon",
-        "accept": [".icon"]
+    "src": "vector-icon-512.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }],
+  "file_handlers": [
+    {
+      "action": ".",
+      "name": "Vector Icon",
+      "accept": {
+        "text/*": [".icon"]
       }
-    ]
-  },
+    }
+  ],
   "lang": "en-US",
   "start_url": "./",
   "display": "standalone",
