@@ -1,8 +1,8 @@
 // See LICENSE
 
 async function getScreens() {
-  const screens = await navigator.screen.requestDisplays();
-  console.log("navigator.screen.getScreens returned " + screens.length + " screens:");
+  const screens = await self.getScreens();
+  console.log("getScreens returned " + screens.length + " screens:");
   for (const screen of screens) {
     console.log(`'${screen.name}' ${screen.left},${screen.top} ${screen.width}x${screen.height} ` +
                 `scaleFactor:${screen.scaleFactor}, colorDepth:${screen.colorDepth} ` +
@@ -18,7 +18,7 @@ async function getBounds(count) {
 
   // Use the Screen Enumeration API to place windows across all displays.
   // TODO(msw): Fix postMessage call; controller is undefined?
-  // const screens = await getScreens();
+  // const screens = await self.getScreens();
   // if (screens && screens.length > 1) {
   //   var lastScreen = screens[screens.length - 1];
   //   w = lastScreen.left + lastScreen.width;
